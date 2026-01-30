@@ -19,11 +19,137 @@ body { background-color: #f9e4b7; font-family: 'Segoe UI', Arial, sans-serif; ov
 
 @keyframes floatEffect { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
 
+/* --- HOTSPOT OVERLAYS --- */
+.hotspot-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 20; 
+}
+
+.hotspot {
+    position: absolute;
+    cursor: pointer;
+    border-radius: 50%;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.hotspot:hover {
+    background: rgba(255, 215, 0, 0.2);
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+    transform: scale(1.05);
+}
+
 /* =========================================
-   INTEGRATED GPOA STYLING
+   FLOATING CREDENTIAL MODAL STYLES (FIXED)
    ========================================= */
 
-/* 1. INTRO (11.png) - UPDATED TO MAXIMIZE SIZE */
+  .modal {
+  display: none; /* Hidden by default */
+  position: fixed;
+  z-index: 9999;
+  padding-top: 60px;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0,0,0,0.8);
+}
+
+.modal-content {
+  margin: auto;
+  display: block;
+  max-width: 80%;
+  max-height: 80%;
+  border-radius: 8px;
+}
+
+.close {
+  position: absolute;
+  top: 20px;
+  right: 35px;
+  color: #fff;
+  font-size: 40px;
+  font-weight: bold;
+  cursor: pointer;
+}
+.close:hover {
+  color: #ccc;
+}
+
+.modal-overlay {
+    display: none; /* Hidden by default */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(74, 8, 8, 0.85); /* Dark background */
+    z-index: 10000; 
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(8px);
+    animation: fadeIn 0.3s ease;
+}
+
+.modal-content {
+    position: relative;
+    max-width: 90%;
+    max-height: 90vh;
+    display: flex;       /* Ensures content is centered */
+    justify-content: center;
+    align-items: center;
+    animation: zoomIn 0.3s ease;
+}
+
+#modal-img {
+    display: block;
+    max-width: 100%;
+    max-height: 85vh; 
+    border: 4px solid #FFD700; 
+    border-radius: 12px;
+    box-shadow: 0 0 40px rgba(0,0,0,0.8);
+    background: #fff; /* White bg in case image has transparency */
+}
+
+/* THE X BUTTON */
+.close-btn {
+    position: absolute;
+    top: -25px;
+    right: -25px;
+    background: #FFD700;
+    color: #4A0808;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    font-size: 30px;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    border: 3px solid #fff;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+    transition: all 0.3s ease;
+    z-index: 10001;
+}
+
+.close-btn:hover {
+    background: #fff;
+    color: #FF0000;
+    transform: rotate(90deg) scale(1.1);
+}
+
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes zoomIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+/* =========================================
+   GPOA STYLING
+   ========================================= */
+
 #gpoa-intro {
     position: relative;
     width: 100%;
@@ -43,18 +169,14 @@ body { background-color: #f9e4b7; font-family: 'Segoe UI', Arial, sans-serif; ov
     animation: goldPulse 8s ease-in-out infinite alternate;
 }
 
-@keyframes goldPulse {
-    from { transform: scale(1); opacity: 0.7; }
-    to { transform: scale(1.15); opacity: 1; }
-}
+@keyframes goldPulse { from { transform: scale(1); opacity: 0.7; } to { transform: scale(1.15); opacity: 1; } }
 
-/* UPDATED IMAGE STYLING */
 .gpoa-cover-img {
     position: relative;
     z-index: 5;
     width: 100%;
     height: 100%;
-    object-fit: cover; /* Ensures it fills the screen like a background */
+    object-fit: cover;
     filter: drop-shadow(0 20px 40px rgba(0,0,0,0.15));
 }
 
@@ -68,7 +190,6 @@ body { background-color: #f9e4b7; font-family: 'Segoe UI', Arial, sans-serif; ov
     animation: bounce 2s infinite;
 }
 
-/* 2. THE STICKY SCROLL TUNNEL */
 #gpoa-scroll-container { position: relative; width: 100%; background-color: #4A0808; }
 
 .sticky-window {
@@ -81,62 +202,26 @@ body { background-color: #f9e4b7; font-family: 'Segoe UI', Arial, sans-serif; ov
     align-items: center;
 }
 
-/* Transitions and Moving Elements */
 .bg-layer { position: absolute; inset: 0; pointer-events: none; }
-
-.transition-bg {
-    background: linear-gradient(to bottom, #e6d73a 0%, #4A0808 15%, #4A0808 100%);
-    z-index: 0;
-}
-
+.transition-bg { background: linear-gradient(to bottom, #e6d73a 0%, #4A0808 15%, #4A0808 100%); z-index: 0; }
 .moving-grid {
-    background-image: 
-        linear-gradient(rgba(230, 215, 58, 0.07) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(230, 215, 58, 0.07) 1px, transparent 1px);
+    background-image: linear-gradient(rgba(230, 215, 58, 0.07) 3px, transparent 1px), linear-gradient(90deg, rgba(230, 215, 58, 0.07) 3px, transparent 1px);
     background-size: 60px 60px;
-    animation: gridTravel 25s linear infinite;
+    animation: gridTravel 15s linear infinite;
     z-index: 1;
 }
 
 @keyframes gridTravel { from { background-position: 0 0; } to { background-position: 120px 120px; } }
 
-/* --- NEW SHOOTING STAR ANIMATION --- */
-.shooting-stars-layer {
-    position: absolute;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    z-index: 2; /* Sits above grid, below content */
-    transform: rotateZ(45deg); /* Diagonal angle */
-    pointer-events: none;
-}
-
+.shooting-stars-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 2; transform: rotateZ(45deg); pointer-events: none; }
 .shooting-stars-layer span {
-    position: absolute;
-    top: 50%; left: 50%;
-    width: 4px; height: 4px;
-    background: #ffd700;
-    border-radius: 50%;
+    position: absolute; top: 50%; left: 50%; width: 4px; height: 4px; background: #ffd700; border-radius: 50%;
     box-shadow: 0 0 0 4px rgba(255,215,0,0.1), 0 0 0 8px rgba(255,215,0,0.1), 0 0 20px rgba(255,215,0,1);
     animation: animateStar 3s linear infinite;
 }
+.shooting-stars-layer span::before { content: ''; position: absolute; top: 50%; transform: translateY(-50%); width: 300px; height: 1px; background: linear-gradient(90deg, #ffd700, transparent); }
 
-.shooting-stars-layer span::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 300px;
-    height: 1px;
-    background: linear-gradient(90deg, #ffd700, transparent);
-}
-
-@keyframes animateStar {
-    0% { transform: rotate(315deg) translateX(0); opacity: 1; }
-    70% { opacity: 1; }
-    100% { transform: rotate(315deg) translateX(-1000px); opacity: 0; }
-}
-
-/* Randomize Star Positions & Speeds */
+@keyframes animateStar { 0% { transform: rotate(315deg) translateX(0); opacity: 1; } 70% { opacity: 1; } 100% { transform: rotate(315deg) translateX(-1000px); opacity: 0; } }
 .shooting-stars-layer span:nth-child(1) { top: 0px; left: 0px; animation-delay: 0s; }
 .shooting-stars-layer span:nth-child(2) { top: 0px; left: 20%; animation-delay: 1.2s; animation-duration: 2.5s; }
 .shooting-stars-layer span:nth-child(3) { top: 10%; left: 60%; animation-delay: 2.4s; animation-duration: 3s; }
@@ -148,116 +233,29 @@ body { background-color: #f9e4b7; font-family: 'Segoe UI', Arial, sans-serif; ov
 .shooting-stars-layer span:nth-child(9) { top: 20%; left: 50%; animation-delay: 4s; animation-duration: 2.7s; }
 .shooting-stars-layer span:nth-child(10) { top: 60%; left: 0%; animation-delay: 1.8s; animation-duration: 2.4s; }
 
-
-/* CONTENT TRACK (2 ROWS) */
-.dual-track-container {
-    position: absolute;
-    z-index: 10;
-    left: 10vw;
-    display: flex;
-    flex-direction: column;
-    gap: 40px;
-    will-change: transform;
-}
-
+.dual-track-container { position: absolute; z-index: 10; left: 10vw; display: flex; flex-direction: column; gap: 40px; will-change: transform; }
 .track-row { display: flex; gap: 50px; }
-
 .gpoa-card { height: 28vh; flex-shrink: 0; transition: transform 0.4s ease; }
-
-.gpoa-card img {
-    height: 100%;
-    border-radius: 12px;
-    border: 3px solid #e6d73a;
-    box-shadow: 10px 20px 40px rgba(0,0,0,0.5);
-}
-
+.gpoa-card img { height: 100%; border-radius: 12px; border: 3px solid #e6d73a; box-shadow: 10px 20px 40px rgba(0,0,0,0.5); }
 .gpoa-card:hover { transform: scale(1.1) translateY(-10px); z-index: 50; }
 
-/* PROGRESS BAR */
-.scroll-progress-bar {
-    position: absolute;
-    bottom: 40px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 35%;
-    height: 6px;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 10px;
-    z-index: 100;
-}
-
-.scroll-progress-fill {
-    height: 100%;
-    background: #e6d73a;
-    width: 0%;
-    box-shadow: 0 0 15px #e6d73a;
-}
+.scroll-progress-bar { position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%); width: 35%; height: 6px; background: rgba(255, 255, 255, 0.1); border-radius: 10px; z-index: 100; }
+.scroll-progress-fill { height: 100%; background: #e6d73a; width: 0%; box-shadow: 0 0 15px #e6d73a; }
 
 footer { text-align: center; padding: 40px; background: #4A0808; color: #FFD700; position: relative; z-index: 200; }
-
 @keyframes bounce { 0%, 20%, 50%, 80%, 100% {transform: translateY(0);} 40% {transform: translateY(-10px);} 60% {transform: translateY(-5px);} }
 
+/* --- MOBILE RESPONSIVE FIXES --- */
 @media (max-width: 768px) {
+    .navbar { height: auto; flex-direction: column; padding: 10px 0; }
+    .nav-logo { position: relative; left: auto; top: auto; height: 90px; margin-bottom: 10px; }
+    .nav-links { width: 100%; margin: 0; justify-content: center; gap: 15px; flex-wrap: wrap; }
+    .nav-link { font-size: 0.85rem; }
+    #gpoa-intro { height: auto; min-height: 50vh; padding: 50px 0; }
+    .gpoa-cover-img { object-fit: contain; height: auto; max-height: 60vh; }
     .gpoa-card { height: 20vh; }
     .dual-track-container { gap: 20px; }
-    .nav-logo { height: 110px; }
-}
-
-footer {
-    text-align: center;
-    padding: 20px;
-    background: #4A0808;
-    color: #FFD700;
-}
-
-.grid-container {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr); /* up to 4 per row */
-  gap: 30px;
-  max-width: 1400px;
-  margin: 50px auto;
-}
-
-.grid-container img {
-  width: 100%;
-  max-width: 250px;       /* control image size */
-  justify-self: center;   /* center inside cell */
-  cursor: pointer;
-  border: 2px solid #ccc;
-  border-radius: 5px;
-}
-
-body {
-  margin: 0;
-  background-image: url("Kandidato.png");
-  background-size: 100%;     /* stretch to fit */
-  background-repeat: no-repeat;
-}
-
-  /* Pyramid section */
-.pyramid {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 30px;
-  margin-top: 100px;
-  margin-bottom: 250px; /* increase vertical distance before next section */
-}
-
-/* Second page grid section */
-.grid-section {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 16px;
-  max-width: 1000px;
-  margin: 0 auto 100px auto;
-}
-
-body {
-  margin: 0;
-  background-image: url("Kandidato.png");
-  background-size: contain;       /* show full image */
-  background-repeat: no-repeat;   /* don’t tile */
-  background-position: center;    /* center it */
-  background-color: maroon;        /* fill gaps with color */
+    
+    /* MODAL MOBILE */
+    .close-btn { top: -15px; right: -10px; width: 40px; height: 40px; font-size: 24px; }
 }
